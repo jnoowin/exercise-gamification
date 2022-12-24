@@ -1,6 +1,6 @@
 # A-08 Exercise Gamification
 
-Check it out [here](https://exercise-gamification.herokuapp.com/).
+Check it out [here](https://exercise-gamification.onrender.com).
 
 ## Features
 
