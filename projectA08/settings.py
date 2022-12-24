@@ -91,19 +91,10 @@ WSGI_APPLICATION = 'projectA08.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dn1teriv6ti0p',
-        'USER': 'ttnnwmokxopoio',
-        'PORT': '5432',
-        'PASSWORD': '053f518779f20afa0c6be254d4985719d364af668955a8366c3bde58559a6ab7',
-        'HOST': 'ec2-54-237-143-127.compute-1.amazonaws.com',
-    }
-}
-if 'test' in sys.argv:
-    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}
 
 
 # Password validation
