@@ -1,0 +1,81 @@
+{% extends "exercise/base.html" %}
+
+{% block content %}
+
+<script>
+  function handleSubmit(event, username) {
+    let data = {
+      follow: false,
+      username,
+    }
+    let button = event.target;
+    if (button.innerHTML === "Follow") {
+      button.innerHTML = "Following";
+      button.classList.remove("btn-primary");
+      button.classList.add("btn-outline-secondary");
+      data.follow = true;
+    } else {
+      button.innerHTML = "Follow";
+      button.classList.remove("btn-outline-secondary");
+      button.classList.add("btn-primary");
+      data.follow = false;
+    }
+
+    const csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    
+    fetch("/follow/", {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: 'same-origin',
+      headers: { "X-CSRFToken": csrfmiddlewaretoken },
+    })
+  }
+</script>
+
+<div style="min-height: 100vh">
+  <main class="d-flex flex-column align-items-center space-between pt-5">
+    <div class="input-group mb-3 my-5" style="width: 70%">
+      <form class="d-flex flex-grow-1" method="get" action="{% url 'exercise:search' %}">
+        <input name="q" type="text" class="form-control" placeholder="Search for users" aria-label="Usernames"
+          aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+      </form>
+    </div>
+
+    <!-- User list -->
+    <section class="rounded p-2 mt-5 w-50" style="background-color: rgb(245, 245, 245);">
+      <h2 class="ml-1">Results</h2>
+      <ul class="list-group mx-1">
+        {% for user, followed in user_dict.items %}
+        <li class="list-group-item align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <div class="flex-column">
+              <h5 class="mb-1"> {{ user.username }}</h5>
+              <small class="text-muted">{{ user.first_name }} {{ user.last_name }}</small>
+            </div>
+            <div>
+              {% if followed %}
+              {% csrf_token %}
+              <button onClick="handleSubmit(event, '{{ user.username }}')" name="follow-button-{{ forloop.counter }}"
+                class="btn btn-outline-secondary" type="submit">Followed</button>
+              {% else %}
+              {% csrf_token %}
+              <button onClick="handleSubmit(event, '{{ user.username }}')" name="follow-button-{{ forloop.counter }}"
+                class="btn btn-primary" type="submit">Follow</button>
+              {% endif %}
+            </div>
+          </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item align-items-start">
+          <div class="d-flex justify-content-center">
+            <h3 class="text-muted">No results :(</h3>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+</div>
+
+{% endblock %}

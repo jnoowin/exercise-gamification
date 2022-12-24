@@ -1,0 +1,34 @@
+{% extends "exercise/base.html" %}
+
+{% block content %}
+<div style="min-height: 100vh">
+  <main class="d-flex flex-column align-items-center space-between pt-5">
+    <div class="d-flex flex-row" style="width:50%">
+      <section class="rounded p-2 w-50 mx-3" style="background-color: rgb(245, 245, 245);">
+        <div class="card m-2 flex-grow-1" style="border: none">
+          <div class="card-body">
+            <h1> {{ num_following }} </h1>
+            <p class="text-muted">following</p>
+          </div>
+        </div>
+      </section>
+      <section class="rounded p-2 w-50 mx-3" style="background-color: rgb(245, 245, 245);">
+        <div class="card m-2 flex-grow-1" style="border: none">
+          <div class="card-body">
+            <h1> {{ num_followers }} </h1>
+            <p class="text-muted">followers</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="input-group mb-3 my-5" style="width: 70%">
+      <form class="d-flex flex-grow-1" method="get" action="{% url 'exercise:search' %}">
+        <input name="q" type="text" class="form-control" placeholder="Search for users" aria-label="Usernames"
+          aria-describedby="button-addon2">
+        <button class="btn btn-primary" type="submit" id="button-addon2">Search</button>
+      </form>
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "exercise/base.html" %}
+
+{% block content %}
+
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ API_KEY }}&libraries=places&callback=initMap">
+</script>
+
+
+<script>
+
+  /**
+   * Title: Places API
+   * https://developers.google.com/maps/documentation/javascript/places
+   **/
+  function initMap(position) {
+    const location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    const map = new google.maps.Map({ center: location });
+    const request = {
+      location: location,
+      radius: '2500',
+      type: ['gym']
+    }
+    const service = new google.maps.places.PlacesService(map);
+    service.nearbySearch(request, writeGyms);
+  }
+
+  function locationSuccess(position) {
+    initMap(position);
+  }
+
+  function writeGyms(gyms) {
+    for (gym in gyms) {
+      const card = document.createElement("div");
+      card.setAttribute("class", "card");
+      const card_body = document.createElement("div");
+      card_body.setAttribute("class", "card-body");
+      const card_m_2 = document.createElement("section");
+      card_m_2.setAttribute("class", "card m-2");
+      card_m_2.setAttribute("style", "border: none");
+      const inner_card_body = document.createElement("div");
+      inner_card_body.setAttribute("class", "card-body");
+      const h3 = document.createElement("h3");
+      h3.setAttribute("style", "text-align: left");
+      const heading_text = document.createTextNode(gyms[gym].name)
+      h3.appendChild(heading_text);
+      inner_card_body.appendChild(h3);
+      card_m_2.appendChild(inner_card_body);
+      card_body.appendChild(card_m_2);
+      card.appendChild(card_body);
+      const gymList = document.getElementById("gym-list");
+      gymList.appendChild(card)
+    }
+  }
+
+  function locationFailure() {
+    console.log("Your browser does not support your location.");
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(locationSuccess, locationFailure);
+  }
+
+</script>
+
+<div style="min-height: 100vh">
+  <div id="map"></div>
+  <main class="d-flex flex-column align-items-center space-between pt-5">
+    <h1>Local Gyms</h1>
+    <ul id="gym-list" class="m-0 p-0" style="text-align: center">
+
+    </ul>
+  </main>
+</div>
+
+
+{% endblock %}

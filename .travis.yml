@@ -1,0 +1,14 @@
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements-travis.txt
+script:
+- python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: z+d4PQd8kSJfnXqfUHHR3/Pxa6oDHp5nZIOzUp+knAu3R/k/TRRazw360FUFRf7LV/T3B8kixJaGi0PqNZsEaKdP7A834whx5IOipt2RKz8FwgW/7LhqkfR/buYRUd3RHxJQedMBlKPfEUqGW3bfnbWcPjo55DTuMvln3bluFEkp3nwKNi8+/dUmYYxo1RgHhgqkQMdCYsHyCMkt1B2ChpNmCGlOjgi3liwHBxvbJ9Ge2cYrrY7tElbcCieU0W7L9dXiF8DKL6nqSPBeBo2Kq/U7ORIn700zOGMQPw7hYkP2+u5t3duIghS4tZE+XUTtfzCNoKnngrRTbnBqucofHvAGsKKDaHP7t5HJN99Yef9Nmv//A0t2qrPvP5hKtbm/bB16ndyWb32zRi/f56VOjHIyJrgmCVYPbRkXrtqxRcFvn8hiNbg1TSLDQXUWQtCxtByxZNQt/vBc+/4o57qVkeKCz+WTZ08ztlBB6ZkEiyEt2D/rJNkDUTfgq/NvBfbfuTFPWGxj/ZsHK/fonm5HyiPECJxHTQfMWfBoj9fTw0YH6czYtBQ5G99nvi0jHvwF59zhu2bzTi/ttQRG6wU3Zl/znjv6DSVRBVdLiUYEv9qJVqEnxB0TTdF8FSoQYYU/OFXTA8cVchHOI2Gm+3DlUznSYuYO4SU+bL/fQXZvn5E=
+  app: exercise-gamification
+  on:
+    repo: uva-cs3240-s21/project-a-08

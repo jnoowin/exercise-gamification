@@ -1,0 +1,156 @@
+{% extends "exercise/base.html" %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+
+<!-- Activity Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#workout").modalForm({ formURL: "{% url 'exercise:new_workout' %}" });
+  });
+</script>
+
+<div style="min-height: 100vh">
+  {% if user.is_authenticated %}
+  <!-- Summary Dashboard -->
+  <main class="d-flex flex-column align-items-center space-between pt-5">
+    <h1>Welcome, {{ user.username }}!</h1>
+    <section class="rounded p-2 mb-5 w-50" style="background-color: rgb(245, 245, 245)">
+      <h2 class="ml-2">Dashboard</h2>
+      <div class="d-flex flex-column">
+        <!-- Exp bar -->
+        <section class="card m-2" style="border: none">
+          <div class="card-body">
+            <h1>Level {{ level }}</h1>
+            <div class="progress">
+              <div class="progress-bar" style="width:{{ percentage }}%" role="progressbar" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="text-muted">Current EXP: {{ progress }}</p>
+              <p class="text-muted">EXP needed: {{ max_exp }}</p>
+            </div>
+          </div>
+        </section>
+        <div class="d-flex flex-row">
+          <!-- Hours -->
+          <div class="d-flex flex-grow-1 card m-2" style="border: none; flex-basis: 0">
+            <div class="card-body">
+              <h1>{{ duration }}</h1>
+              <p class="text-muted">minutes of exercise</p>
+            </div>
+          </div>
+          <!-- Streak -->
+          <div class="d-flex flex-grow-1 card m-2" style="border: none; flex-basis: 0">
+            <div class="card-body">
+              <h1>{{ streak }}</h1>
+              <p class="text-muted">day streak</p>
+            </div>
+          </div>
+          <!-- Calories -->
+          <div class="d-flex flex-grow-1 card m-2" style="border: none; flex-basis: 0">
+            <div class="card-body">
+              <h1>{{ calories }}</h1>
+              <p class="text-muted">calories burned</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Quest -->
+    <section class="rounded p-1 mt-0 w-50" style="background-color: rgb(245, 245, 245)">
+      <h2 class="ml-1">Daily Quest</h2>
+      <section class="card m-2" style="border: none">
+        {% if completed %}
+        <div class="card-body d-flex justify-content-between">
+          <h3 class="text-muted" style="text-decoration: line-through;">
+            <a class="text-secondary" target="_blank" href="{{ quest_url }}" title="See the tweet!">{{ quest_text }}</a>
+          </h3>
+          <div>
+            <button class="btn btn-secondary" disabled>Complete</button>
+          </div>
+        </div>
+        {% else %}
+        <div class="card-body d-flex justify-content-between">
+          <h3>
+            <a class="text-body" target="_blank" href="{{ quest_url }}" title="See the tweet!">{{ quest_text }}</a>
+          </h3>
+          <form method="post" action="/complete/">
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">Complete</button>
+          </form>
+        </div>
+        {% endif %}
+      </section>
+    </section>
+
+    <!-- Activities List -->
+    <section class="rounded p-2 mt-5 w-50" style="background-color: rgb(245, 245, 245)">
+      <ul class="list-group mx-1">
+        <!-- Button modal trigger  -->
+        <div class="d-flex justify-content-between my-2">
+          <h2 class="ml-1">Activities</h2>
+          <div>
+            <button id="workout" class="btn btn-primary" type="button" name="button">
+              Add Workout
+            </button>
+          </div>
+        </div>
+        {% for workout in workout_list %}
+        <a href="#" class="list-group-item list-group-item-action align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <div class="flex-column">
+              <h5 class="mb-1">{{ workout.workout_type }}</h5>
+              <small class="text-muted">{{ workout.date }}</small>
+            </div>
+            <h5>{{ workout.duration }}</h5>
+          </div>
+        </a>
+        {% empty %}
+        <li class="list-group-item align-items-start">
+          <div class="d-flex justify-content-center">
+            <h5 class="text-muted">Add a workout!</h5>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+  {% endif %}
+</div>
+
+<!-- Quest Modal
+<div class="modal fade" id="questModal" tabindex="-1" role="dialog" aria-labelledby="questModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="questModalLabel">Mark as complete?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Once you mark a quest as complete, you <b>CANNOT</b> change it.
+      </div>
+      <div class="modal-footer">
+        <form method="post" action="/complete/">
+          {% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Complete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "exercise/base.html" %}
+
+{% block content %}
+
+<div style="min-height: 100vh">
+  <main class="d-flex flex-column align-items-center space-between pt-5">
+    <div class="d-flex flex-row" style="width: 95%">
+      <section class="rounded p-2 w-50 mx-3" style="background-color: rgb(245, 245, 245)">
+        <div class="card m-2 flex-grow-1" style="border: none">
+          <h1 style="text-align: center">Global Leaderboard</h1>
+          <div class="card-body" style="text-align: center">
+            {% for user in user_list %}
+            <ol class="m-0 p-0" style="text-align: center">
+              <div class="card">
+                <div class="card-body">
+                  <section class="card m-2" style="border: none">
+                    <div class="card-body">
+                      <h3 style="text-align: left">
+                        {{user.user}}: Level {{ user.level }}
+                      </h3>
+                      <div class="progress">
+                        <div class="progress-bar" style="width: {{user.percentage}}%" role="progressbar"
+                          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <p class="text-muted">
+                          Current EXP: {{ user.progress }}
+                        </p>
+                        <p class="text-muted">EXP needed: {{ user.max_exp }}</p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </ol>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      <section class="rounded p-2 w-50 mx-3" style="background-color: rgb(245, 245, 245)">
+        <div class="card m-2 flex-grow-1" style="border: none">
+          <h1 style="text-align: center">Following Leaderboard</h1>
+          <div class="card-body">
+            {% for follow in Follow_dash_list %}
+            <ol style="text-align: center">
+              <div class="card">
+                <div class="card-body">
+                  <section class="card m-2" style="border: none">
+                    <div class="card-body">
+                      <h3 style="text-align: left">
+                        {{follow.user}}: Level {{ follow.level }}
+                      </h3>
+                      <div class="progress">
+                        <div class="progress-bar" style="width: {{follow.percentage}}%" role="progressbar"
+                          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <p class="text-muted">
+                          Current EXP: {{ follow.progress }}
+                        </p>
+                        <p class="text-muted">
+                          EXP needed: {{ follow.max_exp }}
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </ol>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "exercise/base.html" %}
+{% load socialaccount %}
+
+{% block navbar-brand %}
+<a class="navbar-brand mx-3" href="{% url 'exercise:index' %}">
+  Exercise Gamification
+</a>
+{% endblock %}
+
+{% block navbar-drop %}
+{% endblock %}
+
+{% block navbar-link%}
+{% endblock %}
+
+{% block content%}
+
+<main class="d-flex flex-column align-items-center space-between py-5 px-5" style="min-height: 100vh">
+  <section class="w-100">
+    <h1 class="display-1">Exercise Gamification</h1>
+    <div class="px-2">
+      <h5 class="text-muted">
+        Unlock rewards and interact with your friends.
+      </h5>
+      {% if user.is_authenticated %}
+      <a class="btn btn-primary mt-1" role="button" href="{% url 'exercise:dashboard' %}">Go to Dashboard</a>
+      {% else %}
+      <a class="btn btn-primary mt-1" role="button" href="{% provider_login_url 'google' %}">Login with
+        Google</a>
+    </div>
+    {% endif %}
+
+  </section>
+</main>
+
+{% endblock %}
